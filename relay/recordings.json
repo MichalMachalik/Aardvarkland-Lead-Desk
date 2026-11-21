@@ -1,0 +1,22 @@
+{
+  "model": "Qwen3-4B-Instruct-2507-Q4_K_M",
+  "recorded": "2026-11-21T22:30:05.843900+00:00",
+  "temperature": 0,
+  "results": {
+    "crm": {
+      "intent": "crm",
+      "weekly": 40,
+      "deadline": "this_month"
+    },
+    "price": {
+      "intent": "unknown",
+      "weekly": null,
+      "deadline": "unknown"
+    },
+    "booking": {
+      "intent": "booking",
+      "weekly": 12,
+      "deadline": "next_month"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "id": "crm",
+    "company": "Ateliér Lumen",
+    "tag": "Obchod",
+    "subject": "Poptávky z webu do CRM",
+    "text": "Každý týden ručně přepisujeme asi 40 poptávek z webu do CRM. Chceme to automatizovat ještě tento měsíc."
+  },
+  {
+    "id": "price",
+    "company": "Studio Oblouk",
+    "tag": "Cenový dotaz",
+    "subject": "Dotaz na cenu",
+    "text": "Dobrý den, kolik by to stálo? Děkuji."
+  },
+  {
+    "id": "booking",
+    "company": "Dílna Sever",
+    "tag": "Rezervace",
+    "subject": "Potvrzování rezervací",
+    "text": "Každý týden ručně potvrzujeme 12 rezervací e-mailem. Automatické potvrzení chceme spustit příští měsíc."
+  }
+]

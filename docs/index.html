@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#ffffff"><title>Aardvarkland Lead Desk</title>
+<link rel="icon" href="assets/aardvarkland.png"><link rel="stylesheet" href="assets/style.css"><script type="module" src="assets/app.js"></script></head><body>
+<svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<symbol id="inbox" viewBox="0 0 24 24"><path d="m3 14 3-9h12l3 9v5H3zM3 14h5l2 3h4l2-3h5"/></symbol>
+<symbol id="crm" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M8 6V4h8v2M3 11c5 3 13 3 18 0m-11 2h4"/></symbol>
+<symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+<symbol id="history" viewBox="0 0 24 24"><path d="M3 11a9 9 0 1 1 2 7M3 5v6h6m3-5v6l4 2"/></symbol>
+<symbol id="branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="6" cy="19" r="2"/><path d="M6 7v10m0-4c8 0 12-1 12-4"/></symbol>
+<symbol id="play" viewBox="0 0 24 24"><path d="m7 4 13 8-13 8z"/></symbol>
+<symbol id="check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+<symbol id="warn" viewBox="0 0 24 24"><path d="m12 3 10 17H2zM12 9v4m0 3v.3"/></symbol>
+<symbol id="panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></symbol>
+</svg>
+<a class="skip" href="#main">Přejít na obsah</a>
+<aside><a class="brand" href="#poptavky"><img src="assets/aardvarkland.png" alt="" width="34" height="34"><span>Aardvarkland<strong>Lead Desk</strong></span></a>
+<nav aria-label="Pracovní prostor"><a href="#poptavky"><svg><use href="#inbox"/></svg>Poptávky</a><a href="#crm"><svg><use href="#crm"/></svg>CRM</a><a href="#schranka"><svg><use href="#mail"/></svg>Schránka</a><a href="#historie"><svg><use href="#history"/></svg>Historie</a></nav>
+<a class="workflow-link" href="https://github.com/MichalMachalik/Aardvarkland-Lead-Desk/blob/main/workflow/lead-desk.json" target="_blank" rel="noopener"><svg><use href="#branch"/></svg>Workflow n8n ↗</a></aside>
+<div class="shell"><header class="bar"><div><svg aria-hidden="true"><use href="#panel"/></svg><span id="crumb">Poptávky</span></div><small id="workspace">Pracovní prostor</small></header>
+<main id="main" tabindex="-1"><header class="heading"><div><h1 id="title">Poptávky</h1><p id="description">Příjem zpráv, vyhodnocení a předání obchodu.</p></div></header>
+<p id="error" role="alert" class="notice error" hidden></p><div id="view" aria-busy="true">Načítání pracovního prostoru…</div><p class="sr" id="announce" aria-live="polite"></p></main></div>
+</body></html>

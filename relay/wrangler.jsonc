@@ -1,0 +1,8 @@
+{
+  "name": "aardvarkland-lead-desk",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-08-01",
+  "workers_dev": true,
+  "triggers": {"crons": ["17 3 * * *"]},
+  "d1_databases": [{"binding":"DB","database_name":"aardvarkland-lead-desk","database_id":"7ff44acb-aa71-423c-afdf-7f899a7a2426"}]
+}

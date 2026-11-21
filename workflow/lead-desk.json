@@ -1,0 +1,439 @@
+{
+  "name": "Aardvarkland Lead Desk",
+  "id": "AardLeadDesk01",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-desk-v1",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "45ae1211-77b8-41eb-9589-7fa32685219c",
+      "name": "Příjem",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        160
+      ],
+      "webhookId": "e56d7950-dde5-4199-b5af-1e46ff763955"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:17962/step/load",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $('Příjem').first().json.body.ticket }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { run: $('Příjem').first().json.body.run, execution: $execution.id } }}",
+        "options": {
+          "timeout": 110000
+        }
+      },
+      "id": "59bd620c-77b8-41eb-9589-7fa32685219c",
+      "name": "Načíst poptávku",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        200,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e2383744-7863-4abb-aed6-92eef3247b76",
+              "leftValue": "={{ $json.operation === 'approve' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5838c015-77b8-41eb-9589-7fa32685219c",
+      "name": "Schválení odpovědi",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        400,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:17962/step/approve",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $('Příjem').first().json.body.ticket }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { run: $('Příjem').first().json.body.run, execution: $execution.id } }}",
+        "options": {
+          "timeout": 110000
+        }
+      },
+      "id": "2c59ea16-77b8-41eb-9589-7fa32685219c",
+      "name": "Předat odpověď",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        620,
+        -90
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e2383744-7863-4abb-aed6-92eef3247b76",
+              "leftValue": "={{ $json.duplicate }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5cc2d5d8-77b8-41eb-9589-7fa32685219c",
+      "name": "Již vyřízeno",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        620,
+        230
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:17962/step/duplicate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $('Příjem').first().json.body.ticket }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { run: $('Příjem').first().json.body.run, execution: $execution.id } }}",
+        "options": {
+          "timeout": 110000
+        }
+      },
+      "id": "f9560180-77b8-41eb-9589-7fa32685219c",
+      "name": "Vrátit příležitost",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        55
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:17962/step/classify",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $('Příjem').first().json.body.ticket }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { run: $('Příjem').first().json.body.run, execution: $execution.id, input: $json.input } }}",
+        "options": {
+          "timeout": 110000
+        }
+      },
+      "id": "73894639-77b8-41eb-9589-7fa32685219c",
+      "name": "Vyhodnotit zprávu",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        310
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:17962/step/crm",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $('Příjem').first().json.body.ticket }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { run: $('Příjem').first().json.body.run, execution: $execution.id, analysis: $json.analysis } }}",
+        "options": {
+          "timeout": 110000,
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "c6231f99-77b8-41eb-9589-7fa32685219c",
+      "name": "Zapsat do CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1050,
+        310
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e2383744-7863-4abb-aed6-92eef3247b76",
+              "leftValue": "={{ $json.status === 200 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5bc96228-77b8-41eb-9589-7fa32685219c",
+      "name": "CRM potvrdilo zápis",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1260,
+        310
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:17962/step/handover",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $('Příjem').first().json.body.ticket }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { run: $('Příjem').first().json.body.run, execution: $execution.id } }}",
+        "options": {
+          "timeout": 110000
+        }
+      },
+      "id": "ae8bb793-77b8-41eb-9589-7fa32685219c",
+      "name": "Připravit předání",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1480,
+        210
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:17962/step/interrupted",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $('Příjem').first().json.body.ticket }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { run: $('Příjem').first().json.body.run, execution: $execution.id } }}",
+        "options": {
+          "timeout": 110000
+        }
+      },
+      "id": "4dd62e45-77b8-41eb-9589-7fa32685219c",
+      "name": "Zaznamenat výpadek",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1480,
+        430
+      ]
+    }
+  ],
+  "connections": {
+    "Příjem": {
+      "main": [
+        [
+          {
+            "node": "Načíst poptávku",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Načíst poptávku": {
+      "main": [
+        [
+          {
+            "node": "Schválení odpovědi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schválení odpovědi": {
+      "main": [
+        [
+          {
+            "node": "Předat odpověď",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Již vyřízeno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Již vyřízeno": {
+      "main": [
+        [
+          {
+            "node": "Vrátit příležitost",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Vyhodnotit zprávu",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vyhodnotit zprávu": {
+      "main": [
+        [
+          {
+            "node": "Zapsat do CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zapsat do CRM": {
+      "main": [
+        [
+          {
+            "node": "CRM potvrdilo zápis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM potvrdilo zápis": {
+      "main": [
+        [
+          {
+            "node": "Připravit předání",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Zaznamenat výpadek",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false
+  },
+  "versionId": "903cb42a-5f86-49e7-9847-6978a14467d6"
+}

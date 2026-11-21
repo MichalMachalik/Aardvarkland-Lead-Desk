@@ -1,0 +1,30 @@
+PRAGMA foreign_keys = ON;
+CREATE TABLE IF NOT EXISTS requests (
+  id TEXT PRIMARY KEY, owner TEXT NOT NULL, scenario TEXT NOT NULL, created INTEGER NOT NULL,
+  UNIQUE (owner, scenario)
+);
+CREATE TABLE IF NOT EXISTS runs (
+  id TEXT PRIMARY KEY, request_id TEXT NOT NULL REFERENCES requests(id) ON DELETE CASCADE,
+  operation TEXT NOT NULL, fault INTEGER NOT NULL, variant TEXT NOT NULL,
+  status TEXT NOT NULL, engine TEXT, ticket TEXT, execution TEXT,
+  created INTEGER NOT NULL, updated INTEGER NOT NULL, reason TEXT
+);
+CREATE UNIQUE INDEX IF NOT EXISTS active_run ON runs(request_id) WHERE status IN ('queued','running');
+CREATE INDEX IF NOT EXISTS dispatch_queue ON runs(status,created);
+CREATE INDEX IF NOT EXISTS recent_runs ON runs(created);
+CREATE TABLE IF NOT EXISTS events (
+  run_id TEXT NOT NULL REFERENCES runs(id) ON DELETE CASCADE, step TEXT NOT NULL, detail TEXT NOT NULL,
+  at INTEGER NOT NULL, PRIMARY KEY (run_id,step)
+);
+CREATE TABLE IF NOT EXISTS opportunities (
+  id TEXT PRIMARY KEY REFERENCES requests(id) ON DELETE CASCADE, analysis TEXT NOT NULL,
+  created INTEGER NOT NULL, ready INTEGER NOT NULL DEFAULT 0
+);
+CREATE TABLE IF NOT EXISTS tasks (
+  request_id TEXT PRIMARY KEY REFERENCES requests(id) ON DELETE CASCADE, title TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS mailbox (
+  request_id TEXT PRIMARY KEY REFERENCES requests(id) ON DELETE CASCADE, body TEXT NOT NULL, sent INTEGER NOT NULL
+);
+CREATE TABLE IF NOT EXISTS fleet (id INTEGER PRIMARY KEY, heartbeat INTEGER NOT NULL);
+INSERT OR IGNORE INTO fleet VALUES (1,0);
